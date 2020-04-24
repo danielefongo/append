@@ -29,9 +29,8 @@ module.exports = function(loader, toggl, timeSlotter, asker, config) {
 }
 
 async function wantToContinueLastActivity(asker, project, description) {
-  const type = 'list'
   const options = ['yes', 'no']
-  const response = await asker.inquire('Continue with the previous activity? ("' + description + '" on project "' + project.description + '")', type, options)
+  const response = await asker.list('Continue with the previous activity? ("' + description + '" on project "' + project.description + '")', options)
 
   return response === 'yes'
 }
@@ -43,7 +42,7 @@ async function chooseProjectTaskAndDescription (toggl, asker) {
   const tasks = await toggl.getTasks(project.id)
 
   const task = tasks.length > 1 ? await asker.chooseTask(tasks) : tasks[0]
-  const description = await asker.inquire('What have you done?')
+  const description = await asker.input('What have you done?')
 
   return { project, task, description }
 }
